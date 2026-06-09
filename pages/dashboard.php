@@ -92,11 +92,23 @@ $chartMarcas = $pdo->query("
     GROUP BY c.marca ORDER BY total DESC LIMIT 5
 ")->fetchAll();
 
-$chartPagamento = $pdo->query("
-    SELECT forma_pagamento, COUNT(*) AS qtd
-    FROM vendas WHERE status_venda = 'ativa' {$wherePeriodo}
-    GROUP BY forma_pagamento
-")->fetchAll();
+$chartPagamento = chartDadosPagamento(chartContagensFromRows(
+    $pdo->query("
+        SELECT forma_pagamento, COUNT(*) AS qtd
+        FROM vendas WHERE status_venda = 'ativa' {$wherePeriodo}
+        GROUP BY forma_pagamento
+    ")->fetchAll(),
+    'forma_pagamento'
+));
+
+$chartStatus = chartDadosStatus(chartContagensFromRows(
+    $pdo->query("
+        SELECT status_venda, COUNT(*) AS qtd
+        FROM vendas WHERE 1=1 {$wherePeriodo}
+        GROUP BY status_venda
+    ")->fetchAll(),
+    'status_venda'
+));
 
 // Últimas vendas ativas
 $stmt = $pdo->query("
@@ -115,9 +127,11 @@ $activeMenu = 'dashboard';
 $extraScripts = '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 window.ENZO_CHARTS = ' . json_encode([
+    'page' => 'dashboard',
     'vendas' => $chartVendas,
     'marcas' => $chartMarcas,
     'pagamento' => $chartPagamento,
+    'status' => $chartStatus,
 ], JSON_UNESCAPED_UNICODE) . ';</script>';
 require __DIR__ . '/../includes/header.php';
 ?>
@@ -198,6 +212,10 @@ require __DIR__ . '/../includes/header.php';
     <div class="chart-card">
         <h3>Formas de pagamento</h3>
         <div class="chart-wrap"><canvas id="chart-pagamento"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <h3>Status das vendas</h3>
+        <div class="chart-wrap"><canvas id="chart-status"></canvas></div>
     </div>
 </div>
 

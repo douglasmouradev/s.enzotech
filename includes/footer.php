@@ -16,9 +16,9 @@
 <script>
     window.ENZO_BASE_URL = <?= json_encode(baseUrl(), JSON_UNESCAPED_SLASHES) ?>;
 </script>
-<script src="<?= e(baseUrl('assets/js/main.js')) ?>"></script>
 <?php if (!empty($extraScripts)): ?>
     <?= $extraScripts ?>
 <?php endif; ?>
+<script src="<?= e(baseUrl('assets/js/main.js')) ?>"></script>
 </body>
 </html>

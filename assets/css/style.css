@@ -1128,6 +1128,10 @@ button:focus-visible,
   margin-bottom: 24px;
 }
 
+.charts-grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
 .chart-card {
   background: var(--bg-card);
   border: 1px solid var(--border);

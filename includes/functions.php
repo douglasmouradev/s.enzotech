@@ -288,6 +288,72 @@ function labelFormaPagamento(string $forma): string
 }
 
 /**
+ * Label legível do status da venda
+ */
+function labelStatusVenda(string $status): string
+{
+    return match ($status) {
+        'ativa'     => 'Ativas',
+        'cancelada' => 'Canceladas',
+        default     => ucfirst($status),
+    };
+}
+
+/**
+ * @param array<string, int> $contagens
+ * @return list<array{label: string, qtd: int}>
+ */
+function chartDadosPagamento(array $contagens): array
+{
+    $series = [];
+    foreach (appEnums('formas_pagamento') as $forma) {
+        $series[] = [
+            'label' => labelFormaPagamento($forma),
+            'qtd' => (int) ($contagens[$forma] ?? 0),
+        ];
+    }
+    if (isset($contagens['transferencia'])) {
+        $series[] = [
+            'label' => labelFormaPagamento('transferencia'),
+            'qtd' => (int) $contagens['transferencia'],
+        ];
+    }
+
+    return $series;
+}
+
+/**
+ * @param array<string, int> $contagens
+ * @return list<array{label: string, qtd: int}>
+ */
+function chartDadosStatus(array $contagens): array
+{
+    $series = [];
+    foreach (appEnums('status_venda') as $status) {
+        $series[] = [
+            'label' => labelStatusVenda($status),
+            'qtd' => (int) ($contagens[$status] ?? 0),
+        ];
+    }
+
+    return $series;
+}
+
+/**
+ * @param list<array<string, mixed>> $rows
+ * @return array<string, int>
+ */
+function chartContagensFromRows(array $rows, string $campo): array
+{
+    $contagens = [];
+    foreach ($rows as $row) {
+        $contagens[(string) $row[$campo]] = (int) $row['qtd'];
+    }
+
+    return $contagens;
+}
+
+/**
  * Monta URL de paginação preservando query string
  */
 function paginacaoUrl(int $pagina, array $params = []): string

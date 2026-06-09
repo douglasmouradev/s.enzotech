@@ -123,6 +123,14 @@ $stmt = $pdo->prepare("
 $stmt->execute($params);
 $vendas = $stmt->fetchAll();
 
+$chartPagStmt = $pdo->prepare("SELECT v.forma_pagamento, COUNT(*) AS qtd {$baseSql} GROUP BY v.forma_pagamento");
+$chartPagStmt->execute($params);
+$chartPagamento = chartDadosPagamento(chartContagensFromRows($chartPagStmt->fetchAll(), 'forma_pagamento'));
+
+$chartStatusStmt = $pdo->prepare("SELECT v.status_venda, COUNT(*) AS qtd {$baseSql} GROUP BY v.status_venda");
+$chartStatusStmt->execute($params);
+$chartStatus = chartDadosStatus(chartContagensFromRows($chartStatusStmt->fetchAll(), 'status_venda'));
+
 $marcas = $pdo->query('SELECT DISTINCT marca FROM celulares ORDER BY marca')->fetchAll(PDO::FETCH_COLUMN);
 
 $queryParams = array_filter([
@@ -136,6 +144,13 @@ $queryParams = array_filter([
 
 $pageTitle = 'Vendas';
 $activeMenu = 'vendas';
+$extraScripts = '<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+window.ENZO_CHARTS = ' . json_encode([
+    'page' => 'vendas',
+    'pagamento' => $chartPagamento,
+    'status' => $chartStatus,
+], JSON_UNESCAPED_UNICODE) . ';</script>';
 require __DIR__ . '/../../includes/header.php';
 ?>
 
@@ -207,6 +222,17 @@ require __DIR__ . '/../../includes/header.php';
     <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Filtrar</button>
     <a href="<?= e(baseUrl('pages/vendas/listar.php')) ?>" class="btn btn-ghost">Limpar</a>
 </form>
+
+<div class="charts-grid charts-grid--2">
+    <div class="chart-card">
+        <h3>Formas de pagamento</h3>
+        <div class="chart-wrap"><canvas id="chart-pagamento"></canvas></div>
+    </div>
+    <div class="chart-card">
+        <h3>Status das vendas</h3>
+        <div class="chart-wrap"><canvas id="chart-status"></canvas></div>
+    </div>
+</div>
 
 <div class="table-wrap">
     <div class="table-scroll">

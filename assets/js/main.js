@@ -617,17 +617,84 @@
         toggle();
     }
 
+    const CHART_COLORS = ['#E8510A', '#1F3040', '#1a7a4a', '#b45309', '#6B7280', '#be123c', '#7c3aed'];
+    const CHART_STATUS_COLORS = ['#1a7a4a', '#be123c'];
+
+    function initBreakdownChart(canvasId, items, colors) {
+        const el = document.getElementById(canvasId);
+        if (!el || !items || !items.length) return;
+
+        const labels = items.map(function (item) { return item.label; });
+        const data = items.map(function (item) { return parseInt(item.qtd, 10) || 0; });
+        const palette = colors || CHART_COLORS;
+
+        new Chart(el, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: labels.map(function (_, index) {
+                        return palette[index % palette.length];
+                    }),
+                    borderRadius: 4,
+                }],
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: { stepSize: 1, precision: 0 },
+                    },
+                },
+            },
+        });
+    }
+
     function initCharts() {
         if (!window.Chart || !window.ENZO_CHARTS) return;
+
+        const charts = window.ENZO_CHARTS;
+        const page = charts.page || 'dashboard';
         const orange = '#E8510A';
-        const labels = window.ENZO_CHARTS.vendas.map(function (v) { return v.mes; });
-        const data = window.ENZO_CHARTS.vendas.map(function (v) { return parseFloat(v.total); });
-        const el1 = document.getElementById('chart-vendas');
-        if (el1) new Chart(el1, { type: 'line', data: { labels: labels, datasets: [{ label: 'R$', data: data, borderColor: orange, tension: 0.3, fill: false }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-        const el2 = document.getElementById('chart-marcas');
-        if (el2) new Chart(el2, { type: 'bar', data: { labels: window.ENZO_CHARTS.marcas.map(function (m) { return m.marca; }), datasets: [{ data: window.ENZO_CHARTS.marcas.map(function (m) { return parseFloat(m.total); }), backgroundColor: orange }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } } });
-        const el3 = document.getElementById('chart-pagamento');
-        if (el3) new Chart(el3, { type: 'doughnut', data: { labels: window.ENZO_CHARTS.pagamento.map(function (p) { return p.forma_pagamento; }), datasets: [{ data: window.ENZO_CHARTS.pagamento.map(function (p) { return p.qtd; }), backgroundColor: ['#E8510A','#1F3040','#1a7a4a','#b45309','#6B7280','#be123c'] }] }, options: { responsive: true, maintainAspectRatio: false } });
+
+        if (page === 'dashboard') {
+            const labels = (charts.vendas || []).map(function (v) { return v.mes; });
+            const data = (charts.vendas || []).map(function (v) { return parseFloat(v.total); });
+            const el1 = document.getElementById('chart-vendas');
+            if (el1) {
+                new Chart(el1, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{ label: 'R$', data: data, borderColor: orange, tension: 0.3, fill: false }],
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } },
+                });
+            }
+
+            const el2 = document.getElementById('chart-marcas');
+            if (el2) {
+                new Chart(el2, {
+                    type: 'bar',
+                    data: {
+                        labels: (charts.marcas || []).map(function (m) { return m.marca; }),
+                        datasets: [{
+                            data: (charts.marcas || []).map(function (m) { return parseFloat(m.total); }),
+                            backgroundColor: orange,
+                        }],
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } },
+                });
+            }
+        }
+
+        initBreakdownChart('chart-pagamento', charts.pagamento, CHART_COLORS);
+        initBreakdownChart('chart-status', charts.status, CHART_STATUS_COLORS);
     }
 
     function apiUrl(path) {
