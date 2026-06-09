@@ -98,6 +98,7 @@ require __DIR__ . '/../../includes/header.php';
         <table class="data-table">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Produto</th>
                     <th>Categoria</th>
                     <th>SKU</th>
@@ -110,6 +111,13 @@ require __DIR__ . '/../../includes/header.php';
             <tbody>
                 <?php foreach ($produtos as $p): ?>
                     <tr>
+                        <td class="produto-thumb-cell">
+                            <?php if (!empty($p['imagem'])): ?>
+                                <img src="<?= e(produtoImagemUrl((int) $p['id'])) ?>" alt="" class="produto-thumb">
+                            <?php else: ?>
+                                <span class="produto-thumb-placeholder"><i class="bi bi-image"></i></span>
+                            <?php endif; ?>
+                        </td>
                         <td>
                             <strong><?= e($p['nome']) ?></strong>
                             <?php if ($p['marca']): ?>

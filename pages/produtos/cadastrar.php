@@ -20,13 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = 'Token de segurança inválido.';
     } else {
         $dados = $service->parsePost($_POST);
-        $erros = $service->validar($dados);
+        $erros = array_merge(
+            $service->validar($dados),
+            $service->validarImagem($_FILES['imagem'] ?? null)
+        );
 
         if (empty($erros)) {
             try {
                 $id = $service->criar($dados);
+                $errosImg = $service->atualizarImagem($id, $_FILES['imagem'] ?? null, null, false);
                 registrarAuditoria('produto_criado', 'produto', $id);
-                setFlash('sucesso', 'Produto cadastrado com sucesso!');
+                if (!empty($errosImg)) {
+                    setFlash('sucesso', 'Produto cadastrado, mas a imagem não foi salva: ' . implode(' ', $errosImg));
+                } else {
+                    setFlash('sucesso', 'Produto cadastrado com sucesso!');
+                }
                 header('Location: ' . baseUrl('pages/produtos/listar.php'));
                 exit;
             } catch (PDOException $e) {

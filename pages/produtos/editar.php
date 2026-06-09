@@ -30,13 +30,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $erros[] = 'Token de segurança inválido.';
     } else {
         $dados = $service->parsePost($_POST);
-        $erros = $service->validar($dados);
+        $removerImagem = !empty($_POST['remover_imagem']);
+        $erros = array_merge(
+            $service->validar($dados),
+            $removerImagem ? [] : $service->validarImagem($_FILES['imagem'] ?? null)
+        );
 
         if (empty($erros)) {
             try {
+                $imagemAtual = $produto['imagem'] ?? null;
                 $service->atualizar($id, $dados);
+                $errosImg = $service->atualizarImagem(
+                    $id,
+                    $_FILES['imagem'] ?? null,
+                    $imagemAtual ? (string) $imagemAtual : null,
+                    $removerImagem
+                );
                 registrarAuditoria('produto_atualizado', 'produto', $id);
-                setFlash('sucesso', 'Produto atualizado com sucesso!');
+                if (!empty($errosImg)) {
+                    setFlash('sucesso', 'Produto atualizado, mas a imagem não foi salva: ' . implode(' ', $errosImg));
+                } else {
+                    setFlash('sucesso', 'Produto atualizado com sucesso!');
+                }
                 header('Location: ' . baseUrl('pages/produtos/detalhes.php?id=' . $id));
                 exit;
             } catch (PDOException $e) {

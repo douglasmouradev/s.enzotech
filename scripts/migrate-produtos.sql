@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS produtos (
   quantidade INT NOT NULL DEFAULT 0,
   status ENUM('ativo','inativo') NOT NULL DEFAULT 'ativo',
   observacoes TEXT NULL,
+  imagem VARCHAR(255) NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   UNIQUE INDEX idx_produtos_sku (sku),

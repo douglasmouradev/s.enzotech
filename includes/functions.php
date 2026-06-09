@@ -237,6 +237,14 @@ function labelStatusProduto(string $status): string
 }
 
 /**
+ * URL da imagem do produto (requer login)
+ */
+function produtoImagemUrl(int $produtoId): string
+{
+    return baseUrl('pages/produtos/imagem.php?id=' . $produtoId);
+}
+
+/**
  * Label legível da condição do celular
  */
 function labelCondicao(string $condicao): string

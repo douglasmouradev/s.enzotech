@@ -57,6 +57,13 @@ require __DIR__ . '/../../includes/header.php';
 
 <?= renderFlash() ?>
 
+<?php if (!empty($produto['imagem'])): ?>
+<div class="detail-section">
+    <h2><i class="bi bi-image"></i> Imagem</h2>
+    <img src="<?= e(produtoImagemUrl($id)) ?>" alt="<?= e($produto['nome']) ?>" class="produto-imagem-detalhe">
+</div>
+<?php endif; ?>
+
 <div class="detail-section">
     <h2><i class="bi bi-box-seam"></i> Informações do Produto</h2>
     <div class="detail-grid">

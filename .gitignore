@@ -10,6 +10,9 @@ logs/*
 uploads/documentos/*
 !uploads/documentos/.htaccess
 !uploads/documentos/.gitkeep
+uploads/produtos/*
+!uploads/produtos/.htaccess
+!uploads/produtos/.gitkeep
 
 # Dependências e ambiente
 /vendor/

@@ -19,8 +19,10 @@ $precoVenda = $produto['preco_venda'] ?? '';
 if ($precoVenda !== '' && is_numeric($precoVenda)) {
     $precoVenda = number_format((float) $precoVenda, 2, ',', '.');
 }
+$produtoId = (int) ($produto['id'] ?? 0);
+$imagemAtual = !empty($produto['imagem']) ? (string) $produto['imagem'] : null;
 ?>
-<form method="post" class="form-card">
+<form method="post" class="form-card" enctype="multipart/form-data">
     <?= csrfField() ?>
 
     <h2 class="form-section-title">Produto</h2>
@@ -62,6 +64,22 @@ if ($precoVenda !== '' && is_numeric($precoVenda)) {
     <div class="form-group">
         <label for="descricao">Descrição</label>
         <textarea id="descricao" name="descricao" class="form-control" rows="2"><?= e((string) ($produto['descricao'] ?? '')) ?></textarea>
+    </div>
+
+    <h2 class="form-section-title">Imagem</h2>
+    <div class="form-group">
+        <label for="imagem">Foto do produto</label>
+        <?php if ($imagemAtual && $produtoId > 0): ?>
+            <div class="produto-imagem-atual">
+                <img src="<?= e(produtoImagemUrl($produtoId)) ?>" alt="Imagem atual do produto" class="produto-imagem-preview">
+                <label style="display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;">
+                    <input type="checkbox" name="remover_imagem" value="1">
+                    Remover imagem atual
+                </label>
+            </div>
+        <?php endif; ?>
+        <input type="file" id="imagem" name="imagem" class="form-control" accept="image/jpeg,image/png,image/webp">
+        <small class="text-muted">JPG, PNG ou WebP — máximo 5 MB</small>
     </div>
 
     <h2 class="form-section-title">Preços</h2>
