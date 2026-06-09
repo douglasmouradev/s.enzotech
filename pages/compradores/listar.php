@@ -5,10 +5,13 @@
 
 declare(strict_types=1);
 
+use EnzoTech\Services\CompradorService;
+
 require_once __DIR__ . '/../../includes/functions.php';
 requireLogin();
 
 $pdo = getPDO();
+$compradorService = new CompradorService($pdo);
 $busca = trim($_GET['busca'] ?? '');
 $pagina = max(1, (int) ($_GET['pagina'] ?? 1));
 $porPagina = 15;
@@ -90,9 +93,22 @@ require __DIR__ . '/../../includes/header.php';
                         <td><?= e($c['telefone']) ?></td>
                         <td><?= (int) $c['total_compras'] ?></td>
                         <td>
-                            <a href="<?= e(baseUrl('pages/compradores/detalhes.php?id=' . $c['id'])) ?>" class="btn btn-ghost btn-sm" aria-label="Ver comprador">
-                                <i class="bi bi-eye"></i>
-                            </a>
+                            <div class="actions">
+                                <a href="<?= e(baseUrl('pages/compradores/detalhes.php?id=' . $c['id'])) ?>" class="btn btn-ghost btn-sm" aria-label="Ver comprador">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <?php if (temPermissao('vendedor') && !$compradorService->temVendas((int) $c['id'])): ?>
+                                <form method="post" action="<?= e(baseUrl('pages/compradores/excluir.php')) ?>" style="display:inline;">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="comprador_id" value="<?= (int) $c['id'] ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Excluir comprador"
+                                            data-confirm="Excluir <?= e($c['nome_completo']) ?> permanentemente?"
+                                            aria-label="Excluir comprador">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
+                            </div>
                         </td>
                     </tr>
                 <?php endforeach; ?>

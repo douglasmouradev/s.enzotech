@@ -5,10 +5,13 @@
 
 declare(strict_types=1);
 
+use EnzoTech\Services\CompradorService;
+
 require_once __DIR__ . '/../../includes/functions.php';
 requireLogin();
 
 $pdo = getPDO();
+$compradorService = new CompradorService($pdo);
 $id = (int) ($_GET['id'] ?? 0);
 
 $stmt = $pdo->prepare('SELECT * FROM compradores WHERE id = :id');
@@ -46,9 +49,23 @@ require __DIR__ . '/../../includes/header.php';
         <h1 class="page-title"><?= e($comprador['nome_completo']) ?></h1>
         <p class="page-subtitle">Dados do comprador</p>
     </div>
-    <a href="<?= e(baseUrl('pages/vendas/listar.php')) ?>" class="btn btn-ghost">
-        <i class="bi bi-arrow-left"></i> Voltar às Vendas
-    </a>
+    <div class="form-actions" style="margin:0;">
+        <?php if (temPermissao('vendedor') && empty($vendas)): ?>
+        <form method="post" action="<?= e(baseUrl('pages/compradores/excluir.php')) ?>" style="display:inline;">
+            <?= csrfField() ?>
+            <input type="hidden" name="comprador_id" value="<?= $id ?>">
+            <input type="hidden" name="retorno" value="detalhes">
+            <button type="submit" class="btn btn-danger btn-sm"
+                    data-confirm="Excluir permanentemente este comprador?"
+                    aria-label="Excluir comprador">
+                <i class="bi bi-trash"></i> Excluir
+            </button>
+        </form>
+        <?php endif; ?>
+        <a href="<?= e(baseUrl('pages/compradores/listar.php')) ?>" class="btn btn-ghost">
+            <i class="bi bi-arrow-left"></i> Voltar
+        </a>
+    </div>
 </div>
 
 <?= renderFlash() ?>

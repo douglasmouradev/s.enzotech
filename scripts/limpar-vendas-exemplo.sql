@@ -1,9 +1,10 @@
--- Remove vendas e documentos de exemplo (dados do database.sql)
+-- Remove dados de exemplo (vendas, documentos, compradores)
 -- Execute na VPS após instalação para começar do zero:
 -- mysql -u root -p enzo_tech < scripts/limpar-vendas-exemplo.sql
 
 DELETE FROM documentos;
 DELETE FROM vendas;
+DELETE FROM compradores;
 
 UPDATE celulares
 SET status = 'disponivel',

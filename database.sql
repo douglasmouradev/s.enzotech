@@ -127,13 +127,3 @@ INSERT INTO celulares (marca, modelo, serie, imei, imei2, cor, capacidade, condi
 ('Samsung', 'Galaxy A54', 'SM-A546B', '356789012345676', NULL, 'Branco', '128GB', 'usado', 'Pequeno risco na lateral', 'disponivel'),
 ('Motorola', 'Edge 40', 'XT2303-2', '356789012345677', NULL, 'Preto', '256GB', 'seminovo', NULL, 'disponivel'),
 ('Xiaomi', 'Poco X6 Pro', '23113RKC6G', '356789012345678', '356789012345682', 'Amarelo', '512GB', 'novo', NULL, 'disponivel');
-
--- ---------------------------------------------------------------------------
--- Dados de exemplo: compradores
--- ---------------------------------------------------------------------------
-INSERT INTO compradores (nome_completo, cpf, rg, telefone, telefone2, email, endereco, cidade, estado, cep) VALUES
-('Carlos Eduardo Silva', '123.456.789-01', '12.345.678-9', '(11) 98765-4321', NULL, 'carlos.silva@email.com', 'Rua das Flores, 123', 'São Paulo', 'SP', '01310-100'),
-('Ana Paula Oliveira', '234.567.890-12', '23.456.789-0', '(21) 97654-3210', '(21) 3456-7890', 'ana.oliveira@email.com', 'Av. Atlântica, 456', 'Rio de Janeiro', 'RJ', '22010-000'),
-('Roberto Mendes', '345.678.901-23', NULL, '(31) 96543-2109', NULL, 'roberto.m@email.com', 'Rua Bahia, 789', 'Belo Horizonte', 'MG', '30130-000'),
-('Fernanda Costa', '456.789.012-34', '45.678.901-2', '(41) 95432-1098', NULL, 'fernanda.costa@email.com', 'Rua XV de Novembro, 100', 'Curitiba', 'PR', '80020-310'),
-('Lucas Almeida', '567.890.123-45', '56.789.012-3', '(51) 94321-0987', '(51) 3333-4444', 'lucas.almeida@email.com', 'Av. Borges de Medeiros, 500', 'Porto Alegre', 'RS', '90020-025');
