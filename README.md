@@ -22,6 +22,23 @@ Sistema web profissional para revendedores de celulares.
 4. Opcional: `config/empresa.local.php` (dados LGPD)
 5. Acesse `http://localhost/enzo-tech/`
 
+## Deploy na VPS
+
+| Item | Valor |
+|------|--------|
+| Domínio | `enzotech.tdesksolutions.com.br` |
+| Pasta | `/www/wwwroot/enzotech.tdesksolutions.com.br` |
+
+Guia completo: [`deploy/README.md`](deploy/README.md)
+
+```bash
+mkdir -p /www/wwwroot/enzotech.tdesksolutions.com.br
+cd /www/wwwroot/enzotech.tdesksolutions.com.br
+git clone https://github.com/douglasmouradev/s.enzotech.git .
+cp config/database.local.example.php config/database.local.php
+# Edite credenciais, importe database.sql + database_v2.sql + database_indexes.sql
+```
+
 ## Docker
 
 ```bash
