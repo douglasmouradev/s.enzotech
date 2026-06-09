@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS vendas (
       ELSE 0
     END
   ) STORED,
-  forma_pagamento ENUM('dinheiro','pix','cartao_credito','cartao_debito','transferencia','parcelado') NOT NULL,
+  forma_pagamento ENUM('dinheiro','pix','cartao_credito','cartao_debito','parcelado') NOT NULL,
   parcelas INT NULL,
   observacoes TEXT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

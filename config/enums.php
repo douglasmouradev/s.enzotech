@@ -11,7 +11,7 @@ return [
     'status_celular' => ['disponivel', 'vendido', 'reservado'],
     'status_celular_cadastro' => ['disponivel', 'reservado'],
     'origens_celular' => ['fornecedor', 'pf', 'troca', 'outro'],
-    'formas_pagamento' => ['dinheiro', 'pix', 'cartao_credito', 'cartao_debito', 'transferencia', 'parcelado'],
+    'formas_pagamento' => ['dinheiro', 'pix', 'cartao_credito', 'cartao_debito', 'parcelado'],
     'status_venda' => ['ativa', 'cancelada'],
     'status_produto' => ['ativo', 'inativo'],
 ];

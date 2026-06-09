@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $cep = trim($_POST['cep'] ?? '') ?: null;
         $compradorId = (int) ($_POST['comprador_id'] ?? 0);
 
-        $formasValidas = ['dinheiro', 'pix', 'cartao_credito', 'cartao_debito', 'transferencia', 'parcelado'];
+        $formasValidas = appEnums('formas_pagamento');
 
         if ($celularId <= 0) $erros[] = 'Selecione um celular.';
         if ($dataCompra === '') $erros[] = 'Informe a data de compra.';
@@ -274,12 +274,11 @@ require __DIR__ . '/../../includes/header.php';
             <div class="form-group">
                 <label for="forma_pagamento">Forma de Pagamento *</label>
                 <select id="forma_pagamento" name="forma_pagamento" class="form-control" required>
-                    <option value="pix">PIX</option>
-                    <option value="dinheiro">Dinheiro</option>
-                    <option value="cartao_credito">Cartão de Crédito</option>
-                    <option value="cartao_debito">Cartão de Débito</option>
-                    <option value="transferencia">Transferência</option>
-                    <option value="parcelado">Parcelado</option>
+                    <?php foreach (appEnums('formas_pagamento') as $forma): ?>
+                    <option value="<?= e($forma) ?>" <?= ($_POST['forma_pagamento'] ?? 'pix') === $forma ? 'selected' : '' ?>>
+                        <?= labelFormaPagamento($forma) ?>
+                    </option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             <div class="form-group" id="parcelas-group" style="display:none;">
