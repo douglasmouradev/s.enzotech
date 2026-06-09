@@ -13,4 +13,5 @@ return [
     'origens_celular' => ['fornecedor', 'pf', 'troca', 'outro'],
     'formas_pagamento' => ['dinheiro', 'pix', 'cartao_credito', 'cartao_debito', 'transferencia', 'parcelado'],
     'status_venda' => ['ativa', 'cancelada'],
+    'status_produto' => ['ativo', 'inativo'],
 ];

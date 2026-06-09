@@ -20,6 +20,16 @@ declare(strict_types=1);
     </a>
     <?php endif; ?>
 
+    <div class="sidebar-section-label">Produtos</div>
+    <a class="nav-item<?= $activeMenu === 'produtos' ? ' active' : '' ?>" href="<?= e(baseUrl('pages/produtos/listar.php')) ?>">
+        <i class="bi bi-box-seam"></i> Produtos
+    </a>
+    <?php if (temPermissao('vendedor')): ?>
+    <a class="nav-item<?= $activeMenu === 'produtos-cadastrar' ? ' active' : '' ?>" href="<?= e(baseUrl('pages/produtos/cadastrar.php')) ?>">
+        <i class="bi bi-plus-circle"></i> Novo Produto
+    </a>
+    <?php endif; ?>
+
     <div class="sidebar-section-label">Vendas</div>
     <a class="nav-item<?= $activeMenu === 'vendas' ? ' active' : '' ?>" href="<?= e(baseUrl('pages/vendas/listar.php')) ?>">
         <i class="bi bi-receipt"></i> Vendas

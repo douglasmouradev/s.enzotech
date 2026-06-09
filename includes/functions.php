@@ -213,6 +213,30 @@ function labelStatusCelular(string $status): string
 }
 
 /**
+ * Retorna classe CSS do badge de status do produto
+ */
+function badgeStatusProduto(string $status): string
+{
+    return match ($status) {
+        'ativo'   => 'badge-green',
+        'inativo' => 'badge-gray',
+        default   => 'badge-gray',
+    };
+}
+
+/**
+ * Label legível do status do produto
+ */
+function labelStatusProduto(string $status): string
+{
+    return match ($status) {
+        'ativo'   => 'Ativo',
+        'inativo' => 'Inativo',
+        default   => ucfirst($status),
+    };
+}
+
+/**
  * Label legível da condição do celular
  */
 function labelCondicao(string $condicao): string
