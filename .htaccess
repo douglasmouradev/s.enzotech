@@ -1,0 +1,42 @@
+# Enzo Tech — Configuração Apache
+
+# Bloqueia listagem de diretórios
+Options -Indexes
+
+# Charset padrão
+AddDefaultCharset UTF-8
+
+# Protege arquivos sensíveis
+<FilesMatch "^(\.env|\.git|database\.sql|database_lgpd\.sql|database_v2\.sql|database_indexes\.sql|composer\.(json|lock))$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "^(database\.local\.php|auth\.local\.php)$">
+    Require all denied
+</FilesMatch>
+
+# Bloqueia acesso direto à pasta config
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Impede acesso à pasta config
+    RewriteRule ^config/ - [F,L]
+
+    # Impede acesso à pasta includes via URL
+    RewriteRule ^includes/ - [F,L]
+
+    # Impede acesso à pasta logs
+    RewriteRule ^logs/ - [F,L]
+</IfModule>
+
+# Headers de segurança
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Limita tamanho de upload (ajuste conforme servidor)
+php_value upload_max_filesize 10M
+php_value post_max_size 12M

@@ -1,0 +1,30 @@
+# Configuração local (credenciais)
+config/database.local.php
+config/auth.local.php
+config/empresa.local.php
+
+# Logs e uploads
+logs/*
+!logs/.htaccess
+!logs/.gitkeep
+uploads/documentos/*
+!uploads/documentos/.htaccess
+!uploads/documentos/.gitkeep
+
+# Dependências e ambiente
+/vendor/
+.env
+composer.lock
+composer.phar
+
+# IDE e SO
+.idea/
+.vscode/
+.phpunit.cache/
+*.swp
+Thumbs.db
+.DS_Store
+
+# Backups
+/backups/*.sql
+/backups/*.zip
