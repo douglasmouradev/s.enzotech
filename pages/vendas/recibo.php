@@ -34,6 +34,7 @@ registrarAuditoria('recibo_gerado', 'venda', $id);
 <head>
     <meta charset="UTF-8">
     <title>Recibo — Venda #<?= $id ?></title>
+    <?php require __DIR__ . '/../../includes/partials/favicon.php'; ?>
     <link rel="stylesheet" href="<?= e(baseUrl('assets/css/style.css')) ?>">
     <style>
         body { max-width: 700px; margin: 40px auto; padding: 20px; background: #fff; }

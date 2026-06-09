@@ -17,6 +17,7 @@ $activeMenu = $activeMenu ?? '';
     <meta name="csrf-token" content="<?= e(csrfToken()) ?>">
     <?php endif; ?>
     <title><?= e($pageTitle) ?> — Enzo Tech</title>
+    <?php require __DIR__ . '/partials/favicon.php'; ?>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="<?= e(baseUrl('assets/css/style.css')) ?>">
 </head>

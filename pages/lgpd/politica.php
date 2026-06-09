@@ -21,6 +21,7 @@ if ($logado) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Política de Privacidade — Enzo Tech</title>
+        <?php require __DIR__ . '/../../includes/partials/favicon.php'; ?>
         <link rel="stylesheet" href="<?= e(baseUrl('assets/css/style.css')) ?>">
     </head>
     <body style="background:var(--bg-page);">
