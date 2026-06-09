@@ -74,6 +74,53 @@ class VendaService
     }
 
     /**
+     * Exclui venda permanentemente (admin) — remove documentos e libera celular
+     */
+    public function excluirPermanente(int $vendaId): void
+    {
+        $this->pdo->beginTransaction();
+
+        try {
+            $stmt = $this->pdo->prepare('SELECT id, celular_id FROM vendas WHERE id = :id FOR UPDATE');
+            $stmt->execute(['id' => $vendaId]);
+            $venda = $stmt->fetch();
+
+            if (!$venda) {
+                throw new \RuntimeException('Venda não encontrada.');
+            }
+
+            $celularId = (int) $venda['celular_id'];
+
+            $stmtDocs = $this->pdo->prepare('SELECT id, nome_arquivo FROM documentos WHERE venda_id = :id');
+            $stmtDocs->execute(['id' => $vendaId]);
+            foreach ($stmtDocs->fetchAll() as $doc) {
+                DocumentStorage::excluirArquivo($vendaId, (string) $doc['nome_arquivo']);
+            }
+
+            $this->pdo->prepare('DELETE FROM documentos WHERE venda_id = :id')->execute(['id' => $vendaId]);
+            $this->pdo->prepare('DELETE FROM vendas WHERE id = :id')->execute(['id' => $vendaId]);
+
+            $stmtAtiva = $this->pdo->prepare("
+                SELECT id FROM vendas WHERE celular_id = :id AND status_venda = 'ativa' LIMIT 1
+            ");
+            $stmtAtiva->execute(['id' => $celularId]);
+
+            if (!$stmtAtiva->fetch()) {
+                $this->pdo->prepare("UPDATE celulares SET status = 'disponivel' WHERE id = :id")
+                    ->execute(['id' => $celularId]);
+            }
+
+            registrarAuditoria('venda_excluida', 'venda', $vendaId, 'Exclusão permanente — celular #' . $celularId);
+            $this->pdo->commit();
+        } catch (Throwable $e) {
+            if ($this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
+            throw $e;
+        }
+    }
+
+    /**
      * Calcula data fim da garantia
      */
     public static function calcularGarantiaAte(string $dataVenda, int $dias): string

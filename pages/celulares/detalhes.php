@@ -5,10 +5,13 @@
 
 declare(strict_types=1);
 
+use EnzoTech\Services\CelularService;
+
 require_once __DIR__ . '/../../includes/functions.php';
 requireLogin();
 
 $pdo = getPDO();
+$celularService = new CelularService($pdo);
 $id = (int) ($_GET['id'] ?? 0);
 
 $stmt = $pdo->prepare('SELECT * FROM celulares WHERE id = :id');
@@ -48,6 +51,18 @@ require __DIR__ . '/../../includes/header.php';
         <a href="<?= e(baseUrl('pages/celulares/editar.php?id=' . $id)) ?>" class="btn btn-primary btn-sm">
             <i class="bi bi-pencil"></i> Editar
         </a>
+        <?php if (!$celularService->temVendas($id)): ?>
+        <form method="post" action="<?= e(baseUrl('pages/celulares/excluir.php')) ?>" style="display:inline;">
+            <?= csrfField() ?>
+            <input type="hidden" name="celular_id" value="<?= $id ?>">
+            <input type="hidden" name="retorno" value="detalhes">
+            <button type="submit" class="btn btn-danger btn-sm"
+                    data-confirm="Excluir este aparelho permanentemente?"
+                    aria-label="Excluir celular">
+                <i class="bi bi-trash"></i> Excluir
+            </button>
+        </form>
+        <?php endif; ?>
         <?php endif; ?>
         <a href="<?= e(baseUrl('pages/celulares/listar.php')) ?>" class="btn btn-ghost btn-sm">
             <i class="bi bi-arrow-left"></i> Voltar

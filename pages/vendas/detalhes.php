@@ -55,6 +55,17 @@ require __DIR__ . '/../../includes/header.php';
             <i class="bi bi-x-circle"></i> Cancelar
         </button>
         <?php endif; ?>
+        <?php if (temPermissao('admin')): ?>
+        <form method="post" action="<?= e(baseUrl('pages/vendas/excluir.php')) ?>" style="display:inline;">
+            <?= csrfField() ?>
+            <input type="hidden" name="venda_id" value="<?= $id ?>">
+            <button type="submit" class="btn btn-danger btn-sm"
+                    data-confirm="Excluir permanentemente esta venda? Documentos serão removidos e o aparelho voltará ao estoque."
+                    aria-label="Excluir venda">
+                <i class="bi bi-trash"></i> Excluir
+            </button>
+        </form>
+        <?php endif; ?>
         <a href="<?= e(baseUrl('pages/vendas/listar.php')) ?>" class="btn btn-ghost">
             <i class="bi bi-arrow-left"></i> Voltar
         </a>

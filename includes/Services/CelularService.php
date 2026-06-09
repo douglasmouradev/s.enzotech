@@ -142,6 +142,41 @@ class CelularService
         return (bool) $stmt->fetch();
     }
 
+    public function temVendas(int $celularId): bool
+    {
+        $stmt = $this->pdo->prepare('SELECT id FROM vendas WHERE celular_id = :id LIMIT 1');
+        $stmt->execute(['id' => $celularId]);
+        return (bool) $stmt->fetch();
+    }
+
+    /**
+     * @return array{ok: bool, motivo: string}
+     */
+    public function podeExcluir(int $id): array
+    {
+        $stmt = $this->pdo->prepare('SELECT id, marca, modelo FROM celulares WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        if (!$stmt->fetch()) {
+            return ['ok' => false, 'motivo' => 'Celular não encontrado.'];
+        }
+        if ($this->temVendas($id)) {
+            return ['ok' => false, 'motivo' => 'Não é possível excluir aparelho com vendas registradas.'];
+        }
+        return ['ok' => true, 'motivo' => ''];
+    }
+
+    public function excluir(int $id): void
+    {
+        $check = $this->podeExcluir($id);
+        if (!$check['ok']) {
+            throw new \RuntimeException($check['motivo']);
+        }
+
+        $stmt = $this->pdo->prepare('DELETE FROM celulares WHERE id = :id');
+        $stmt->execute(['id' => $id]);
+        registrarAuditoria('celular_excluido', 'celular', $id);
+    }
+
     public function mensagemErroDuplicidade(PDOException $e): string
     {
         return $e->getCode() == 23000

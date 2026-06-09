@@ -264,9 +264,20 @@ require __DIR__ . '/../../includes/header.php';
                                 <a href="<?= e(baseUrl('pages/compradores/detalhes.php?id=' . $v['comprador_id'])) ?>" class="btn btn-ghost btn-sm" title="Ver comprador">
                                     <i class="bi bi-person"></i>
                                 </a>
-                                <a href="<?= e(baseUrl('pages/vendas/detalhes.php?id=' . $v['id'])) ?>" class="btn btn-ghost btn-sm" title="Ver venda">
+                                <a href="<?= e(baseUrl('pages/vendas/detalhes.php?id=' . $v['id'])) ?>" class="btn btn-ghost btn-sm" title="Ver venda" aria-label="Ver venda">
                                     <i class="bi bi-eye"></i>
                                 </a>
+                                <?php if (temPermissao('admin')): ?>
+                                <form method="post" action="<?= e(baseUrl('pages/vendas/excluir.php')) ?>" style="display:inline;">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="venda_id" value="<?= (int) $v['id'] ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Excluir venda"
+                                            data-confirm="Excluir permanentemente a venda de <?= e($v['marca'] . ' ' . $v['modelo']) ?>? Esta ação não pode ser desfeita."
+                                            aria-label="Excluir venda">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
                             </div>
                         </td>
                     </tr>

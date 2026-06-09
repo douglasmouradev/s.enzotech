@@ -119,12 +119,12 @@ CREATE TABLE IF NOT EXISTS documentos (
 -- Dados de exemplo: celulares
 -- ---------------------------------------------------------------------------
 INSERT INTO celulares (marca, modelo, serie, imei, imei2, cor, capacidade, condicao, observacoes, status) VALUES
-('Samsung', 'Galaxy S23', 'SM-S911B', '356789012345671', '356789012345679', 'Preto', '256GB', 'seminovo', 'Sem arranhões na tela', 'vendido'),
-('Apple', 'iPhone 14', 'A2882', '356789012345672', NULL, 'Azul', '128GB', 'seminovo', 'Bateria 92%', 'vendido'),
+('Samsung', 'Galaxy S23', 'SM-S911B', '356789012345671', '356789012345679', 'Preto', '256GB', 'seminovo', 'Sem arranhões na tela', 'disponivel'),
+('Apple', 'iPhone 14', 'A2882', '356789012345672', NULL, 'Azul', '128GB', 'seminovo', 'Bateria 92%', 'disponivel'),
 ('Xiaomi', 'Redmi Note 13', '23021RAAEG', '356789012345673', '356789012345680', 'Verde', '128GB', 'novo', 'Lacrado', 'disponivel'),
 ('Motorola', 'Moto G84', 'XT2347-1', '356789012345674', NULL, 'Grafite', '256GB', 'seminovo', NULL, 'disponivel'),
 ('Apple', 'iPhone 15 Pro', 'A3101', '356789012345675', '356789012345681', 'Titânio Natural', '256GB', 'novo', 'Com nota fiscal', 'reservado'),
-('Samsung', 'Galaxy A54', 'SM-A546B', '356789012345676', NULL, 'Branco', '128GB', 'usado', 'Pequeno risco na lateral', 'vendido'),
+('Samsung', 'Galaxy A54', 'SM-A546B', '356789012345676', NULL, 'Branco', '128GB', 'usado', 'Pequeno risco na lateral', 'disponivel'),
 ('Motorola', 'Edge 40', 'XT2303-2', '356789012345677', NULL, 'Preto', '256GB', 'seminovo', NULL, 'disponivel'),
 ('Xiaomi', 'Poco X6 Pro', '23113RKC6G', '356789012345678', '356789012345682', 'Amarelo', '512GB', 'novo', NULL, 'disponivel');
 
@@ -137,23 +137,3 @@ INSERT INTO compradores (nome_completo, cpf, rg, telefone, telefone2, email, end
 ('Roberto Mendes', '345.678.901-23', NULL, '(31) 96543-2109', NULL, 'roberto.m@email.com', 'Rua Bahia, 789', 'Belo Horizonte', 'MG', '30130-000'),
 ('Fernanda Costa', '456.789.012-34', '45.678.901-2', '(41) 95432-1098', NULL, 'fernanda.costa@email.com', 'Rua XV de Novembro, 100', 'Curitiba', 'PR', '80020-310'),
 ('Lucas Almeida', '567.890.123-45', '56.789.012-3', '(51) 94321-0987', '(51) 3333-4444', 'lucas.almeida@email.com', 'Av. Borges de Medeiros, 500', 'Porto Alegre', 'RS', '90020-025');
-
--- ---------------------------------------------------------------------------
--- Dados de exemplo: vendas
--- ---------------------------------------------------------------------------
-INSERT INTO vendas (celular_id, comprador_id, data_compra, valor_compra, data_venda, valor_venda, forma_pagamento, parcelas, observacoes) VALUES
-(1, 1, '2025-01-10', 2800.00, '2025-01-25', 3499.00, 'pix', NULL, 'Cliente pagou à vista via PIX'),
-(2, 2, '2025-02-05', 3200.00, '2025-02-18', 3999.00, 'cartao_credito', 10, 'Parcelado em 10x sem juros'),
-(6, 3, '2025-03-01', 900.00, '2025-03-15', 1199.00, 'dinheiro', NULL, NULL),
-(1, 4, '2024-11-20', 2500.00, '2024-12-05', 2999.00, 'transferencia', NULL, 'Venda antiga de referência'),
-(2, 5, '2025-04-01', 3100.00, '2025-04-10', 3799.00, 'parcelado', 6, 'Entrada + 5 parcelas');
-
--- ---------------------------------------------------------------------------
--- Dados de exemplo: documentos (arquivos fictícios para referência)
--- ---------------------------------------------------------------------------
-INSERT INTO documentos (venda_id, nome_original, nome_arquivo, tipo_arquivo, tamanho_bytes, descricao) VALUES
-(1, 'nota_fiscal_s23.pdf', 'doc_674a1b2c3d4e5.pdf', 'application/pdf', 245760, 'Nota fiscal de compra'),
-(1, 'rg_comprador.jpg', 'doc_674a1b2c3d4e6.jpg', 'image/jpeg', 189440, 'RG do comprador'),
-(2, 'contrato_venda.pdf', 'doc_674a1b2c3d4e7.pdf', 'application/pdf', 312000, 'Contrato de venda'),
-(3, 'comprovante_pix.png', 'doc_674a1b2c3d4e8.png', 'image/png', 98432, 'Comprovante PIX'),
-(4, 'termo_garantia.docx', 'doc_674a1b2c3d4e9.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 45678, 'Termo de garantia');

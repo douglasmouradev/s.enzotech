@@ -5,10 +5,13 @@
 
 declare(strict_types=1);
 
+use EnzoTech\Services\CelularService;
+
 require_once __DIR__ . '/../../includes/functions.php';
 requireLogin();
 
 $pdo = getPDO();
+$celularService = new CelularService($pdo);
 
 $busca = trim($_GET['busca'] ?? '');
 $status = $_GET['status'] ?? '';
@@ -149,6 +152,17 @@ require __DIR__ . '/../../includes/header.php';
                                 <a href="<?= e(baseUrl('pages/celulares/editar.php?id=' . $c['id'])) ?>" class="btn btn-ghost btn-sm" title="Editar" aria-label="Editar celular">
                                     <i class="bi bi-pencil"></i>
                                 </a>
+                                <?php if (!$celularService->temVendas((int) $c['id'])): ?>
+                                <form method="post" action="<?= e(baseUrl('pages/celulares/excluir.php')) ?>" style="display:inline;">
+                                    <?= csrfField() ?>
+                                    <input type="hidden" name="celular_id" value="<?= (int) $c['id'] ?>">
+                                    <button type="submit" class="btn btn-danger btn-sm" title="Excluir"
+                                            data-confirm="Excluir <?= e($c['marca'] . ' ' . $c['modelo']) ?> permanentemente?"
+                                            aria-label="Excluir celular">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                                <?php endif; ?>
                                 <?php endif; ?>
                             </div>
                         </td>
