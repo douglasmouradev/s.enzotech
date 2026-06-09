@@ -36,6 +36,8 @@ class CelularService
             'cor' => trim($post['cor'] ?? '') ?: null,
             'capacidade' => trim($post['capacidade'] ?? '') ?: null,
             'condicao' => $post['condicao'] ?? 'novo',
+            'bateria_pct' => ($b = trim($post['bateria_pct'] ?? '')) !== '' ? (int) $b : null,
+            'acessorios' => trim($post['acessorios'] ?? '') ?: null,
             'status' => $status,
             'observacoes' => trim($post['observacoes'] ?? '') ?: null,
             'valor_compra' => !empty($post['valor_compra']) ? parseMoeda((string) $post['valor_compra']) : null,
@@ -73,6 +75,12 @@ class CelularService
         if (!in_array($data['condicao'], $this->enums['condicoes_celular'], true)) {
             $erros[] = 'Condição inválida.';
         }
+        if ($data['bateria_pct'] !== null && ($data['bateria_pct'] < 0 || $data['bateria_pct'] > 100)) {
+            $erros[] = 'Bateria deve estar entre 0% e 100%.';
+        }
+        if ($data['acessorios'] !== null && mb_strlen($data['acessorios']) > 500) {
+            $erros[] = 'Acessórios: máximo 500 caracteres.';
+        }
         if (!in_array($data['origem'], $this->enums['origens_celular'], true)) {
             $erros[] = 'Origem inválida.';
         }
@@ -103,10 +111,12 @@ class CelularService
     public function criar(array $data): int
     {
         $stmt = $this->pdo->prepare("
-            INSERT INTO celulares (marca, modelo, serie, imei, imei2, cor, capacidade, condicao, observacoes, status,
-                valor_compra, data_compra, fornecedor, nota_fiscal_compra, origem, reservado_para, reservado_ate, valor_sinal)
-            VALUES (:marca, :modelo, :serie, :imei, :imei2, :cor, :capacidade, :condicao, :observacoes, :status,
-                :valor_compra, :data_compra, :fornecedor, :nota_fiscal, :origem, :reservado_para, :reservado_ate, :valor_sinal)
+            INSERT INTO celulares (marca, modelo, serie, imei, imei2, cor, capacidade, condicao, bateria_pct, acessorios,
+                observacoes, status, valor_compra, data_compra, fornecedor, nota_fiscal_compra, origem,
+                reservado_para, reservado_ate, valor_sinal)
+            VALUES (:marca, :modelo, :serie, :imei, :imei2, :cor, :capacidade, :condicao, :bateria_pct, :acessorios,
+                :observacoes, :status, :valor_compra, :data_compra, :fornecedor, :nota_fiscal, :origem,
+                :reservado_para, :reservado_ate, :valor_sinal)
         ");
         $stmt->execute($this->bindParams($data));
         return (int) $this->pdo->lastInsertId();
@@ -125,6 +135,7 @@ class CelularService
                 marca = :marca, modelo = :modelo, serie = :serie,
                 imei = :imei, imei2 = :imei2, cor = :cor,
                 capacidade = :capacidade, condicao = :condicao,
+                bateria_pct = :bateria_pct, acessorios = :acessorios,
                 observacoes = :observacoes, status = :status,
                 valor_compra = :valor_compra, data_compra = :data_compra,
                 fornecedor = :fornecedor, nota_fiscal_compra = :nota_fiscal,
@@ -199,6 +210,8 @@ class CelularService
             'cor' => $data['cor'],
             'capacidade' => $data['capacidade'],
             'condicao' => $data['condicao'],
+            'bateria_pct' => $data['bateria_pct'],
+            'acessorios' => $data['acessorios'],
             'observacoes' => $data['observacoes'],
             'status' => $data['status'],
             'valor_compra' => $data['valor_compra'],

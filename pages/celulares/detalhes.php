@@ -108,6 +108,16 @@ require __DIR__ . '/../../includes/header.php';
             <p><?= labelCondicao($celular['condicao']) ?></p>
         </div>
         <div class="detail-item">
+            <label>Bateria</label>
+            <p><?= isset($celular['bateria_pct']) && $celular['bateria_pct'] !== null && $celular['bateria_pct'] !== ''
+                ? (int) $celular['bateria_pct'] . '%'
+                : '—' ?></p>
+        </div>
+        <div class="detail-item">
+            <label>Acessórios</label>
+            <p><?= e($celular['acessorios'] ?: '—') ?></p>
+        </div>
+        <div class="detail-item">
             <label>Cadastrado em</label>
             <p><?= formatData($celular['created_at']) ?></p>
         </div>

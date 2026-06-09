@@ -65,6 +65,16 @@ if ($valorSinal !== '' && is_numeric($valorSinal)) {
             </select>
         </div>
         <div class="form-group">
+            <label for="bateria_pct">Bateria (%)</label>
+            <input type="number" id="bateria_pct" name="bateria_pct" class="form-control" min="0" max="100" step="1"
+                   placeholder="Ex: 92" value="<?= e((string) ($celular['bateria_pct'] ?? '')) ?>">
+        </div>
+        <div class="form-group">
+            <label for="acessorios">Acessórios</label>
+            <input type="text" id="acessorios" name="acessorios" class="form-control" maxlength="500"
+                   placeholder="Ex: Carregador, Cabo, Caixa" value="<?= e((string) ($celular['acessorios'] ?? '')) ?>">
+        </div>
+        <div class="form-group">
             <label for="status">Status *</label>
             <select id="status" name="status" class="form-control" required <?= $temVendaAtiva ? 'disabled' : '' ?>>
                 <option value="disponivel" <?= ($celular['status'] ?? 'disponivel') === 'disponivel' ? 'selected' : '' ?>>Disponível</option>

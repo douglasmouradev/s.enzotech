@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS celulares (
   cor VARCHAR(50) NULL,
   capacidade VARCHAR(20) NULL,
   condicao ENUM('novo','seminovo','usado') NOT NULL DEFAULT 'novo',
+  bateria_pct TINYINT UNSIGNED NULL,
+  acessorios VARCHAR(500) NULL,
   observacoes TEXT NULL,
   status ENUM('disponivel','vendido','reservado') NOT NULL DEFAULT 'disponivel',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

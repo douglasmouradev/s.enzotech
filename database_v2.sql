@@ -51,6 +51,8 @@ ALTER TABLE celulares ADD COLUMN origem ENUM('fornecedor','pf','troca','outro') 
 ALTER TABLE celulares ADD COLUMN reservado_para VARCHAR(150) NULL AFTER status;
 ALTER TABLE celulares ADD COLUMN reservado_ate DATE NULL AFTER reservado_para;
 ALTER TABLE celulares ADD COLUMN valor_sinal DECIMAL(10,2) NULL AFTER reservado_ate;
+ALTER TABLE celulares ADD COLUMN bateria_pct TINYINT UNSIGNED NULL AFTER condicao;
+ALTER TABLE celulares ADD COLUMN acessorios VARCHAR(500) NULL AFTER bateria_pct;
 
 -- ---------------------------------------------------------------------------
 -- Compradores — versão da política LGPD
